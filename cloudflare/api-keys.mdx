@@ -1,0 +1,53 @@
+export const description =
+    'Learn how to configure Cloudflare API keys for the Go Uploader Template. A step-by-step guide to generating R2 API tokens and integrating them into your project.'
+
+# Getting Your Cloudflare R2 API Keys
+
+Before you can use the Uploader Template, you need to set up your Cloudflare API keys. This guide will walk you through the process.
+We will assume you have already set up your Cloudflare account and have a domain name managed in Cloudflare.
+
+1. **Open Cloudflare's dashboard**.
+    - Go to [Cloudflare](https://dash.cloudflare.com).
+2. **Navigate to the R2 Object Storage**.
+    - Click on the `R2 Object Storage` tab in the left sidebar.
+    <div>
+        <img src="https://r2.interrupted.me/zZz/urem.png" alt="Navigating to R2 Object Storage" />
+    </div>
+3. **Create a new API token**.
+    - Assuming you have already set up your R2 bucket, click on `Manage R2 API Tokens`.
+    <div>
+        <img src="https://r2.interrupted.me/zZz/ooxj.png" alt="Managing R2 API Tokens" />
+    </div>
+    - Click on `Create API Token`.
+    <div>
+        <img src="https://r2.interrupted.me/zZz/bjrs.png" alt="Creating an R2 API Tokens" />
+    </div>
+4. **Configure the API token**.
+    - Give your token a name and select the permissions you want to grant. In our case `Object Read & Write` is sufficient.
+    - It is recommended to Specify a bucket to limit the token's access.
+    <div>
+        <img src="https://r2.interrupted.me/zZz/4dhx.png" alt="Configuring the API Token" />
+    </div>
+    - After configuring the token, scroll down and click on `Create API Token`.
+5. **Copy the Values To Your .env**. 
+    - Copy the `Access Key ID`, `Secret Access Key` and `jurisdiction endpoint url` values to your `.env` file.
+    <div>
+        <img src="https://r2.interrupted.me/zZz/9ndj.png" alt="Copying the API Token Values" />
+    </div>
+    - Your `.env` file should look like this:
+    ```bash
+    PORT=":your-port"
+
+    CLOUDFLARE_R2_ACCESS_KEY_ID="Access Key ID"
+    CLOUDFLARE_R2_SECRET_ACCESS_KEY="Secret Access Key"
+    CLOUDFLARE_R2_BUCKET="Your Bucket Name"
+    CLOUDFLARE_R2_ENDPOINT="https://12sd3aasd12sd23sd123.r2.cloudflarestorage.com"
+    R2_URL="https://r2.example.com"
+    ```
+6. **Start the Application**.
+    - Run the application locally to test your setup:
+    ```bash
+    go run src/main.go
+    ```
+    - You’ll see the server start successfully, indicating the app is live. By default, it will run on http://localhost:your-port.
+    - Test it using a tool like [Postman](https://www.postman.com/) or [Insomnia](https://insomnia.rest/).

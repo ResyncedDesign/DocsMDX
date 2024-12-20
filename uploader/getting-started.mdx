@@ -1,0 +1,72 @@
+export const description =
+    'Learn how to set up and deploy the Go Uploader Template. Follow our step-by-step guide to configure your Cloudflare R2 bucket and host your file uploader with ease.'
+
+export const sections = [
+    { title: '🚀 Prerequisites', id: 'prerequisites' },
+    { title: '📦 Installation', id: 'installation' },
+    { title: '💡 Next Steps', id: 'next-steps' },
+]
+
+## 🚀 Prerequisites
+
+Before proceeding, ensure you have the following ready:
+
+- A **Cloudflare Account** with a configured **R2 bucket**.
+- A **domain name** managed in Cloudflare.
+- A **VPS** or server to host the uploader (e.g., DigitalOcean, AWS, or any hosting provider).
+- **Go** (version 1.23 or higher) installed on your local machine or server.
+
+### Need help setting up Cloudflare R2?
+
+<div className="not-prose"><Button href="/cloudflare/" variant="text" arrow="right" children="How to set up Cloudflare R2" /></div>
+
+### Need help generating API tokens?
+
+<div className="not-prose"> <Button href="/cloudflare/api-keys" variant="text" arrow="right" children="How to get an API key" /></div>
+
+## 📦 Installation
+
+Follow these steps to set up the Go Uploader Template locally:
+
+### 1. Clone the Repository
+    
+    Download the template from GitHub to your local machine:
+    
+    ```bash
+    git clone https://github.com/ResyncedDesign/UploaderTemplate.git
+    cd UploaderTemplate
+    ```
+
+### 2. Configure the Environment
+
+    The template uses a `.env` file to manage sensitive settings.
+    1. Copy the `.env.example` file to `.env`:
+        
+        ```bash
+        cp .env.example .env
+        ```
+    2. Fill out the `.env` with your Cloudflare creditentials
+
+### 3. Start the Application
+
+    Run the application locally to test your setup:
+        
+    ```bash
+    go run src/main.go
+    ```
+
+You’ll see the server start successfully, indicating the app is live. By default, it will run on http://localhost:your-port.
+Test it using a tool like [Postman](https://www.postman.com/) or [Insomnia](https://insomnia.rest/).
+
+### 4. Deploy to Your Server
+
+Once everything works locally, you can deploy the uploader to your server.
+Refer to the <a href="/uploader/deploy">Deployment Guide</a> for detailed instructions on VPS configuration and hosting.
+
+## 💡 Next Steps
+
+Now that your Go Uploader Template is running, you can:
+
+    1. Customize it to suit your needs (e.g., add authentication, logging, etc.).
+    2. Use it with your favorite frontend frameworks to integrate seamless file uploads.
+    3. Explore advanced setups, including reverse proxies and HTTPS configurations.

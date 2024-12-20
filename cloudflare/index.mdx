@@ -1,0 +1,79 @@
+export const description =
+    'Step-by-step guide to setting up Cloudflare R2 for the Go Uploader Template. Learn how to create buckets, configure CORS policies, and connect a custom domain.'
+
+# Setting Up Cloudflare R2
+
+Before you can use the Uploader Template, you need to set up your Cloudflare R2. This guide will walk you through the process.
+We will assume you have already set up your Cloudflare account and have a domain name managed in Cloudflare.
+
+1. **Open Cloudflare's dashboard**.
+    - Go to [Cloudflare](https://dash.cloudflare.com).
+2. **Navigate to the R2 Object Storage**.
+    - Click on the `R2 Object Storage` tab in the left sidebar.
+    <div>
+        <img src="https://r2.interrupted.me/zZz/urem.png" alt="Navigating to R2 Object Storage" />
+    </div>
+3. **Create a new bucket**.
+    - Click on the `Create Bucket` button.
+    <div>
+        <img src="https://r2.interrupted.me/zZz/w9fr.png" alt="Creating a new bucket" />
+    </div>
+    - Enter a name for the bucket.
+    - Choose a region. (We recommend choosing `Automatic`).
+    - Choose a storage class. (We recommend choosing `Standard`).
+    - Click on the `Create Bucket` button.
+    <div>
+        <img src="https://r2.interrupted.me/zZz/laax.png" alt="Configuring the bucket" />
+    </div>
+4. **Configure the bucket**.
+    - Click on the `Settings` tab.
+    <div>
+        <img src="https://r2.interrupted.me/zZz/f1a6.png" alt="Opening the bucket settings tab" />
+    </div>
+    - Scroll down until you see the `Public Access` section.
+    - Click on `Connect Domain`.
+    <div>
+        <img src="https://r2.interrupted.me/zZz/9ruo.png" alt="Public Access section" />
+    </div>
+    - It is recommended to use a subdomain for the bucket. For example, `cdn.example.com`.
+    - Click on the `Continue` button.
+    <div>
+        <img src="https://r2.interrupted.me/zZz/nyak.png" alt="Connecting a domain" />
+    </div>
+    - Preview the DNS record that will be created. If everything looks good, click on the `Connect domain` button.
+    <div>
+        <img src="https://r2.interrupted.me/zZz/skfw.png" alt="Previewing the DNS record" />
+    </div>
+    - Wait for the DNS record to propagate. After that, you can access your bucket using the subdomain you chose.
+5. **Adding a CORS Policy**.
+    - Scroll down until you see the `CORS Policy` section.
+    - Click on `Add CORS Policy`.
+    <div>
+        <img src="https://r2.interrupted.me/zZz/h31p.png" alt="Adding a cors policy" />
+    </div>
+    - Enter the following configuration:
+        ```json
+        [
+            {
+                "AllowedOrigins": [
+                    "http://127.0.0.1:3000",
+                    "https://example.com"
+                ],
+                "AllowedMethods": [
+                    "GET",
+                    "POST",
+                    "DELETE",
+                    "PUT",
+                    "HEAD"
+                ]
+            }
+        ]
+        ```
+    - The above configuration allows requests from the specified origins and methods. You can modify it according to your needs.
+    - Click on the `Save` button.
+
+That's it! You have successfully set up your Cloudflare R2 Object Storage. You can now use it with the Uploader Template.
+
+### Next Steps
+
+<div className="not-prose"><Button href="/cloudflare/api-keys" variant="text" arrow="right" children="How to get an API key" /></div>

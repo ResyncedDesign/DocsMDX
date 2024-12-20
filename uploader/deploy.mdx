@@ -1,0 +1,154 @@
+export const description =
+    'Comprehensive guide to deploying the Go Uploader Template to production. Learn prerequisites, server setup, environment configuration, reverse proxy setup, and enabling HTTPS for a secure file upload solution.'
+
+export const sections = [
+    { title: '🚀 Prerequisites', id: 'prerequisites' },
+    { title: '📦 Installation', id: 'installation' },
+]
+
+## 🚀 Prerequisites
+
+Before deploying the Go Uploader Template to production, ensure you have the following ready:
+
+- A **Cloudflare Account** with a configured **R2 bucket**.
+- A **domain name** managed in Cloudflare.
+- A **VPS** or server to host the uploader (e.g., DigitalOcean, AWS, or any hosting provider) with root or sudo access.
+- **Go** (version 1.23 or higher) installed on your vps/server You can install it using:
+    
+    ```bash
+    sudo apt update
+    sudo apt install golang
+    ```
+
+- **HTTP server** like Nginx or Apache for reverse proxy and domain handling.
+
+## 📦 Installation
+
+### 1. Clone the Repository
+
+    Download the template from GitHub to your server:
+    ```bash
+    git clone https://github.com/ResyncedDesign/UploaderTemplate.git
+    cd UploaderTemplate
+    ```
+
+### 2. Configure the Environment
+
+    The template uses a `.env` file to manage sensitive settings.
+    1. Copy the `.env.example` file to `.env:
+        
+        ```bash
+        cp .env.example .env
+        ```
+    2. Fill out the `.env` with your Cloudflare creditentials and other settings.
+
+### 3. Test the Application
+
+    Run the application to ensure it works as expected and there are no errors:
+        
+    ```bash
+    go run src/main.go
+    ```
+
+    If everything is working as expected, you can proceed to the next step.
+
+### 4. Build the Application
+    
+    Build the application to create a binary file that can be run on your server:
+        
+    ```bash
+    go build -o resynced-uploader src/main.go
+    ```
+
+### 5. Set up Systemd
+
+    Systemd is a system and service manager for Linux operating systems. It is used to manage services and daemons. You can create a systemd service file to manage your Go Uploader Template.
+
+    1. Create a new service file:
+        
+        ```bash
+        sudo nano /etc/systemd/system/resynced-uploader.service
+        ```
+
+    2. Add the following configuration to the file:
+        
+        ```ini
+        [Unit]
+        Description=Resynced Uploader Service
+        After=network.target
+
+        [Service]
+        ExecStart=/path/to/project/resynced-uploader
+        WorkingDirectory=/path/to/project/
+        Restart=always
+        User=your-username
+
+        [Install]
+        WantedBy=multi-user.target
+        ``` 
+
+    3. Save and close the file.
+
+    4. Start and enable the service: 
+
+        ```bash
+        sudo systemctl daemon-reload
+        sudo systemctl start resynced-uploader
+        sudo systemctl enable resynced-uploader
+        ```
+
+    5. Check the status of the service to ensure it is running without any errors:
+
+        ```bash
+        sudo systemctl status resynced-uploader
+        ```
+
+    If everything is working as expected, you can proceed to the next step.
+
+### 6. Set Up a Reverse Proxy
+
+    - Install and configure **Nginx** or **Apache** to route traffic to your GoFiber app.
+    - Example for Nginx:
+            
+            ```nginx
+                server {
+                    listen 80;
+                    server_name yourdomain.com;
+
+                    location / {
+                        proxy_pass http://127.0.0.1:<your-app-port>;
+                        proxy_http_version 1.1;
+                        proxy_set_header Upgrade $http_upgrade;
+                        proxy_set_header Connection 'upgrade';
+                        proxy_set_header Host $host;
+                        proxy_cache_bypass $http_upgrade;
+                    }
+                }
+            ```
+
+    - Replace `yourdomain.com` with your actual domain and `<your-app-port>` with the port your GoFiber app is running on.
+    - Restart Nginx to apply the changes.
+
+        ```bash
+        sudo systemctl restart nginx
+        ```
+
+    If everything is working as expected, you can proceed to the next step.
+
+### 7. Enable HTTPS (Optional but Recommended)
+
+    - Use **Certbot** to install an SSL certificate for your domain: 
+    
+            ```bash
+            sudo apt install certbot python3-certbot-nginx
+            sudo certbot --nginx -d yourdomain.com
+            ```
+
+    - Follow the on-screen instructions to configure the SSL certificate.
+    - Restart Nginx to apply the changes.
+
+        ```bash
+        sudo systemctl restart nginx
+        ```
+    
+    Your Go Uploader Template should now be live and accessible via your domain name. You can test the uploader by uploading a file and verifying that it is stored in your Cloudflare R2 bucket.
